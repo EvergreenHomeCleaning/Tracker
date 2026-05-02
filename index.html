@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tracker · Олег</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1410;
+  --c1:#171d18;
+  --c2:#1e261f;
+  --border:#2a382b;
+  --text:#e8f0e8;
+  --muted:#5a7a5c;
+  --g:#4caf72;
+  --gd:#1a3d28;
+  --gb:#2d6040;
+  --b:#5b8fd4;
+  --bd:#1a2d4a;
+  --r:#d45b5b;
+  --rd:#3d1a1a;
+  --y:#c4a83a;
+  --yd:#3d3010;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;padding-bottom:90px;min-height:100vh;}
+.app{max-width:430px;margin:0 auto;}
+
+/* HEADER */
+.hdr{padding:20px 18px 14px;display:flex;justify-content:space-between;align-items:center;background:var(--c1);border-bottom:1px solid var(--border);}
+.logo{font-size:20px;font-weight:700;color:var(--g);letter-spacing:-0.5px;}
+.logo span{font-weight:300;color:var(--muted);}
+.hdate{font-size:11px;color:var(--muted);font-weight:500;text-align:right;line-height:1.6;}
+
+/* DATE NAV */
+.dbar{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--c1);border-bottom:1px solid var(--border);}
+.nbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--c2);color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:600;}
+.nbtn:active{background:var(--gd);}
+.dbox{flex:1;background:var(--gd);border:1px solid var(--gb);border-radius:10px;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;}
+.dlbl{font-size:14px;font-weight:600;color:var(--g);}
+.todaybtn{font-size:9px;background:var(--g);color:#0f1410;padding:4px 10px;border-radius:99px;font-weight:700;letter-spacing:1px;cursor:pointer;border:none;font-family:'Plus Jakarta Sans',sans-serif;text-transform:uppercase;}
+
+/* SUMMARY */
+.sumrow{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:12px 18px;}
+.sc{background:var(--c1);border:1px solid var(--border);border-radius:10px;padding:10px 4px;text-align:center;}
+.sc .sl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:600;}
+.sc .sv{font-size:17px;font-weight:700;}
+.sc.stax{background:var(--yd);border-color:var(--y);}
+
+/* TABS */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 18px 10px;}
+.tab{padding:11px;border-radius:10px;border:1px solid var(--border);background:var(--c1);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;}
+.tab:active{transform:scale(0.97);}
+.tab.t-dd{background:var(--bd);border-color:var(--b);color:var(--b);}
+.tab.t-cl{background:var(--gd);border-color:var(--gb);color:var(--g);}
+
+/* FORM */
+.form{margin:0 18px 10px;background:var(--c1);border-radius:14px;padding:16px;display:none;border:1px solid var(--border);animation:fi 0.2s ease;}
+.form.show{display:block;}
+.form.fdd{border-color:var(--b);}
+.form.fcl{border-color:var(--gb);}
+@keyframes fi{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.ftitle{font-size:16px;font-weight:700;margin-bottom:14px;}
+.ftitle.dd{color:var(--b);}
+.ftitle.cl{color:var(--g);}
+.fg{margin-bottom:10px;}
+.fl{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;display:block;font-weight:600;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+input{width:100%;background:var(--c2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:500;padding:10px 12px;outline:none;transition:all 0.15s;-webkit-appearance:none;}
+input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(76,175,114,0.1);}
+input::placeholder{color:var(--border);font-weight:400;}
+
+/* TAX BOX */
+.taxbox{background:var(--yd);border:1px solid var(--y);border-radius:9px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.taxbox .tl{font-size:11px;color:var(--y);font-weight:600;}
+.taxbox .tv{font-size:22px;font-weight:700;color:var(--y);}
+
+/* DIVIDER */
+.fdiv{height:1px;background:var(--border);margin:14px 0 10px;}
+.fdiv-lbl{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin:-5px auto 12px;background:var(--c1);width:fit-content;padding:0 10px;font-weight:600;}
+
+.addbtn{width:100%;padding:13px;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.3px;cursor:pointer;transition:all 0.15s;}
+.addbtn:active{opacity:0.88;transform:scale(0.98);}
+.bdd{background:var(--b);color:#fff;}
+.bcl{background:var(--g);color:#0f1410;}
+
+/* RECORDS */
+.recs{margin:0 18px 10px;background:var(--c1);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.recs-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.recs-hdr span{font-size:14px;font-weight:700;color:var(--text);}
+.recs-hdr small{font-size:11px;color:var(--muted);font-weight:500;}
+.rec{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);gap:12px;}
+.rec:last-child{border-bottom:none;}
+.ric{font-size:20px;flex-shrink:0;}
+.rinfo{flex:1;min-width:0;}
+.rtype{font-size:10px;letter-spacing:0.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;}
+.rdetail{font-size:12px;color:var(--muted);font-weight:400;}
+.rnums{text-align:right;flex-shrink:0;}
+.rinc{font-size:18px;font-weight:700;}
+.rsub{font-size:10px;color:var(--muted);margin-top:2px;font-weight:500;}
+.delbtn{background:none;border:1px solid var(--border);color:var(--muted);width:26px;height:26px;border-radius:7px;cursor:pointer;font-size:10px;flex-shrink:0;font-weight:600;}
+.delbtn:active{border-color:var(--r);color:var(--r);}
+.empty{padding:32px;text-align:center;color:var(--muted);font-size:13px;font-weight:500;}
+.empty-icon{font-size:32px;margin-bottom:10px;opacity:0.4;}
+
+/* MONTH */
+.mcard{margin:0 18px 12px;background:var(--c1);border:1px solid var(--border);border-radius:14px;padding:16px;}
+.mhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.mhdr .mt{font-size:16px;font-weight:700;color:var(--text);}
+.mhdr .md{font-size:11px;color:var(--muted);font-weight:600;background:var(--c2);padding:3px 9px;border-radius:99px;border:1px solid var(--border);}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.mi{background:var(--c2);border-radius:10px;padding:12px;border:1px solid var(--border);}
+.mi .ml{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;font-weight:600;}
+.mi .mv{font-size:22px;font-weight:700;}
+.taxrow{background:var(--yd);border:1px solid var(--y);border-radius:10px;padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.ti .tl{font-size:9px;color:var(--y);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;font-weight:600;}
+.ti .tv{font-size:20px;font-weight:700;color:var(--y);}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(23,29,24,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;padding:8px 0 24px;max-width:430px;margin:0 auto;}
+.bnbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;cursor:pointer;background:none;border:none;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;transition:color 0.15s;}
+.bnbtn.on{color:var(--g);}
+.bni{font-size:22px;}
+
+/* HISTORY */
+.hpage{display:none;padding:18px;}
+.hpage.show{display:block;}
+.hg{margin-bottom:16px;}
+.hghdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px;}
+.hghdr .hd{font-size:12px;font-weight:600;color:var(--muted);}
+.hghdr .ht{font-size:16px;font-weight:700;color:var(--g);}
+.mpage{display:none;}
+.mpage.show{display:block;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="hdr">
+  <div class="logo">Daily <span>Tracker</span></div>
+  <div class="hdate" id="hdr-date"></div>
+</div>
+
+<div class="dbar">
+  <button class="nbtn" onclick="chDay(-1)">‹</button>
+  <div class="dbox">
+    <span class="dlbl" id="dlbl"></span>
+    <button class="todaybtn" onclick="goToday()">Today</button>
+  </div>
+  <button class="nbtn" onclick="chDay(1)">›</button>
+</div>
+
+<div class="sumrow">
+  <div class="sc"><div class="sl">DD</div><div class="sv" id="s-dd" style="color:var(--b)">$0</div></div>
+  <div class="sc"><div class="sl">Клін</div><div class="sv" id="s-cl" style="color:var(--g)">$0</div></div>
+  <div class="sc"><div class="sl">Витр</div><div class="sv" id="s-exp" style="color:var(--r)">$0</div></div>
+  <div class="sc"><div class="sl">Чисто</div><div class="sv" id="s-net">$0</div></div>
+  <div class="sc stax"><div class="sl" style="color:var(--y)">Такса</div><div class="sv" id="s-tax" style="color:var(--y)">$0</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab" onclick="showF('dd',this)" id="btn-dd">🚗 DoorDash</button>
+  <button class="tab" onclick="showF('cl',this)" id="btn-cl">🧹 Клінінг</button>
+</div>
+
+<div class="form fdd" id="form-dd">
+  <div class="ftitle dd">DoorDash</div>
+  <div class="r2">
+    <div class="fg"><label class="fl">Заробив $</label><input type="number" id="dd-inc" placeholder="175" inputmode="decimal" oninput="updDDTax()"></div>
+    <div class="fg"><label class="fl">Бензин $</label><input type="number" id="dd-gas" placeholder="40.50" inputmode="decimal"></div>
+  </div>
+  <div class="r2">
+    <div class="fg"><label class="fl">Майли</label><input type="number" id="dd-miles" placeholder="155" inputmode="decimal"></div>
+    <div class="fg"><label class="fl">Нотатка</label><input type="text" id="dd-note" placeholder="..."></div>
+  </div>
+  <div class="taxbox">
+    <span class="tl">💰 Відклад 20% на таксу</span>
+    <span class="tv" id="dd-tax-show">$0</span>
+  </div>
+  <button class="addbtn bdd" onclick="addDD()">Додати DoorDash</button>
+</div>
+
+<div class="form fcl" id="form-cl">
+  <div class="ftitle cl">Клінінг</div>
+  <div class="r2">
+    <div class="fg"><label class="fl">Клінінг $</label><input type="number" id="cl-inc" placeholder="150" inputmode="decimal" oninput="updCLTax()"></div>
+    <div class="fg"><label class="fl">Бензин $</label><input type="number" id="cl-gas" placeholder="10" inputmode="decimal"></div>
+  </div>
+  <div class="taxbox">
+    <span class="tl">💰 Відклад 30% на таксу</span>
+    <span class="tv" id="cl-tax-show">$0</span>
+  </div>
+  <div class="fdiv"></div>
+  <div class="fdiv-lbl">Витрати на клінінг</div>
+  <div class="fg"><label class="fl">Витрати $</label><input type="number" id="cl-exp" placeholder="0" inputmode="decimal"></div>
+  <button class="addbtn bcl" onclick="addCL()">Додати Клінінг</button>
+</div>
+
+<div class="mpage show" id="page-main">
+  <div class="recs">
+    <div class="recs-hdr"><span>Записи за день</span><small id="rcount">0 записів</small></div>
+    <div id="day-recs"></div>
+  </div>
+  <div class="mcard">
+    <div class="mhdr"><span class="mt" id="m-title">Місяць</span><span class="md" id="m-days">0 днів</span></div>
+    <div class="mgrid">
+      <div class="mi"><div class="ml">DoorDash</div><div class="mv" id="m-dd" style="color:var(--b)">$0</div></div>
+      <div class="mi"><div class="ml">Клінінг</div><div class="mv" id="m-cl" style="color:var(--g)">$0</div></div>
+      <div class="mi"><div class="ml">Витрати</div><div class="mv" id="m-exp" style="color:var(--r)">$0</div></div>
+      <div class="mi"><div class="ml">Чистими</div><div class="mv" id="m-net">$0</div></div>
+    </div>
+    <div class="taxrow">
+      <div class="ti"><div class="tl">DD такса 20%</div><div class="tv" id="m-dd-tax">$0</div></div>
+      <div class="ti"><div class="tl">Клінінг такса 30%</div><div class="tv" id="m-cl-tax">$0</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="hpage" id="page-hist">
+  <div style="font-size:20px;font-weight:700;margin-bottom:16px;color:var(--text)">Історія</div>
+  <div id="hist-list"></div>
+</div>
+
+<div class="bnav">
+  <button class="bnbtn on" onclick="navTo('main',this)"><span class="bni">📊</span><span>Сьогодні</span></button>
+  <button class="bnbtn" onclick="navTo('hist',this)"><span class="bni">📋</span><span>Історія</span></button>
+</div>
+
+<script>
+let recs=JSON.parse(localStorage.getItem('oleh-tr')||'[]');
+let cur=new Date();cur.setHours(0,0,0,0);
+const MO=['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
+const DA=['Нд','Пн','Вт','Ср','Чт','Пт','Сб'];
+function save(){localStorage.setItem('oleh-tr',JSON.stringify(recs));}
+function dk(d){return d.toISOString().split('T')[0];}
+function f(n){return '$'+Math.abs(Math.round(n));}
+const now=new Date();
+document.getElementById('hdr-date').textContent=DA[now.getDay()]+', '+now.getDate()+' '+MO[now.getMonth()];
+function navTo(p,el){
+  document.querySelectorAll('.mpage,.hpage').forEach(x=>x.classList.remove('show'));
+  document.querySelectorAll('.bnbtn').forEach(x=>x.classList.remove('on'));
+  document.getElementById('page-'+p).classList.add('show');
+  el.classList.add('on');
+  if(p==='hist')renderHist();
+}
+function goToday(){cur=new Date();cur.setHours(0,0,0,0);render();}
+function chDay(d){cur.setDate(cur.getDate()+d);render();}
+function showF(t,el){
+  ['dd','cl'].forEach(x=>{document.getElementById('form-'+x).classList.remove('show');document.getElementById('btn-'+x).classList.remove('t-dd','t-cl');});
+  const fm=document.getElementById('form-'+t);
+  if(!fm.classList.contains('show')){fm.classList.add('show');el.classList.add('t-'+t);}
+}
+function updDDTax(){const v=parseFloat(document.getElementById('dd-inc').value)||0;document.getElementById('dd-tax-show').textContent=f(v*0.20);}
+function updCLTax(){const v=parseFloat(document.getElementById('cl-inc').value)||0;document.getElementById('cl-tax-show').textContent=f(v*0.30);}
+function addDD(){
+  const inc=parseFloat(document.getElementById('dd-inc').value)||0;
+  if(!inc){alert('Вкажи заробіток!');return;}
+  const gas=parseFloat(document.getElementById('dd-gas').value)||0;
+  const tax=Math.round(inc*0.20);
+  const net=inc-gas-tax;
+  recs.push({id:Date.now(),date:dk(cur),type:'dd',inc,gas,miles:parseFloat(document.getElementById('dd-miles').value)||0,tax,net,note:document.getElementById('dd-note').value});
+  save();['dd-inc','dd-gas','dd-miles','dd-note'].forEach(x=>document.getElementById(x).value='');
+  document.getElementById('dd-tax-show').textContent='$0';render();
+}
+function addCL(){
+  const inc=parseFloat(document.getElementById('cl-inc').value)||0;
+  if(!inc){alert('Вкажи заробіток!');return;}
+  const gas=parseFloat(document.getElementById('cl-gas').value)||0;
+  const exp=parseFloat(document.getElementById('cl-exp').value)||0;
+  const tax=Math.round(inc*0.30);
+  const net=inc-gas-tax-exp;
+  recs.push({id:Date.now(),date:dk(cur),type:'cl',inc,gas,exp,tax,net});
+  save();['cl-inc','cl-gas','cl-exp'].forEach(x=>document.getElementById(x).value='');
+  document.getElementById('cl-tax-show').textContent='$0';render();
+}
+function delRec(id){recs=recs.filter(r=>r.id!==id);save();render();if(document.getElementById('page-hist').classList.contains('show'))renderHist();}
+function render(){
+  const d=dk(cur);
+  const today=new Date();today.setHours(0,0,0,0);
+  const yest=new Date(today);yest.setDate(yest.getDate()-1);
+  let lbl=DA[cur.getDay()]+', '+cur.getDate()+' '+MO[cur.getMonth()];
+  if(cur.getTime()===today.getTime())lbl='Сьогодні · '+cur.getDate()+' '+MO[cur.getMonth()];
+  if(cur.getTime()===yest.getTime())lbl='Вчора · '+cur.getDate()+' '+MO[cur.getMonth()];
+  document.getElementById('dlbl').textContent=lbl;
+  const dr=recs.filter(r=>r.date===d);
+  let ddI=0,clI=0,expT=0,gasT=0,taxT=0,netT=0;
+  dr.forEach(r=>{
+    if(r.type==='dd'){ddI+=r.inc;gasT+=r.gas||0;taxT+=r.tax||0;netT+=r.net||0;}
+    if(r.type==='cl'){clI+=r.inc;expT+=r.exp||0;gasT+=r.gas||0;taxT+=r.tax||0;netT+=r.net||0;}
+  });
+  document.getElementById('s-dd').textContent=f(ddI);
+  document.getElementById('s-cl').textContent=f(clI);
+  document.getElementById('s-exp').textContent=f(expT+gasT);
+  document.getElementById('s-tax').textContent=f(taxT);
+  const ne=document.getElementById('s-net');
+  ne.textContent=f(netT);ne.style.color=netT>=0?'var(--g)':'var(--r)';
+  document.getElementById('rcount').textContent=dr.length+' записів';
+  const el=document.getElementById('day-recs');
+  if(!dr.length){el.innerHTML='<div class="empty"><div class="empty-icon">📝</div>Немає записів за цей день</div>';}
+  else{el.innerHTML=dr.map(r=>{
+    if(r.type==='dd')return`<div class="rec"><div class="ric">🚗</div><div class="rinfo"><div class="rtype" style="color:var(--b)">DoorDash</div><div class="rdetail">${r.miles?r.miles+' mi · ':''}${r.note||'—'}</div></div><div class="rnums"><div class="rinc" style="color:var(--b)">+${f(r.inc)}</div><div class="rsub">−${f(r.gas||0)} бенз · −${f(r.tax||0)} такса</div><div class="rsub" style="color:var(--g);font-weight:700">= ${f(r.net||0)} чисто</div></div><button class="delbtn" onclick="delRec(${r.id})">✕</button></div>`;
+    if(r.type==='cl')return`<div class="rec"><div class="ric">🧹</div><div class="rinfo"><div class="rtype" style="color:var(--g)">Клінінг</div><div class="rdetail">${r.exp?'витрати: '+f(r.exp):''}</div></div><div class="rnums"><div class="rinc" style="color:var(--g)">+${f(r.inc)}</div><div class="rsub">−${f(r.gas||0)} бенз · −${f(r.tax||0)} такса${r.exp?' · −'+f(r.exp)+' витр':''}</div><div class="rsub" style="color:var(--g);font-weight:700">= ${f(r.net||0)} чисто</div></div><button class="delbtn" onclick="delRec(${r.id})">✕</button></div>`;
+  }).join('');}
+  const mr=recs.filter(r=>{const x=new Date(r.date);return x.getMonth()===cur.getMonth()&&x.getFullYear()===cur.getFullYear();});
+  let mDD=0,mCL=0,mExp=0,mGas=0,mDDT=0,mCLT=0,mNet=0;const days=new Set();
+  mr.forEach(r=>{days.add(r.date);if(r.type==='dd'){mDD+=r.inc;mGas+=r.gas||0;mDDT+=r.tax||0;mNet+=r.net||0;}if(r.type==='cl'){mCL+=r.inc;mExp+=r.exp||0;mGas+=r.gas||0;mCLT+=r.tax||0;mNet+=r.net||0;}});
+  document.getElementById('m-title').textContent=MO[cur.getMonth()]+' '+cur.getFullYear();
+  document.getElementById('m-days').textContent=days.size+' днів';
+  document.getElementById('m-dd').textContent=f(mDD);
+  document.getElementById('m-cl').textContent=f(mCL);
+  document.getElementById('m-exp').textContent=f(mExp+mGas);
+  document.getElementById('m-dd-tax').textContent=f(mDDT);
+  document.getElementById('m-cl-tax').textContent=f(mCLT);
+  const mn=document.getElementById('m-net');mn.textContent=f(mNet);mn.style.color=mNet>=0?'var(--g)':'var(--r)';
+}
+function renderHist(){
+  const el=document.getElementById('hist-list');
+  if(!recs.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div>Немає записів</div>';return;}
+  const groups={};recs.forEach(r=>{if(!groups[r.date])groups[r.date]=[];groups[r.date].push(r);});
+  const dates=Object.keys(groups).sort((a,b)=>b.localeCompare(a));
+  el.innerHTML=dates.map(date=>{
+    const dr=groups[date];let tot=0;
+    dr.forEach(r=>{if(r.type==='dd')tot+=r.net||0;if(r.type==='cl')tot+=r.net||0;});
+    const dobj=new Date(date+'T12:00:00');
+    return`<div class="hg"><div class="hghdr"><span class="hd">${DA[dobj.getDay()]}, ${dobj.getDate()} ${MO[dobj.getMonth()]}</span><span class="ht">${f(tot)} чисто</span></div><div style="background:var(--c1);border:1px solid var(--border);border-radius:12px;overflow:hidden;">${dr.map(r=>{const ic=r.type==='dd'?'🚗':'🧹';const col=r.type==='dd'?'var(--b)':'var(--g)';return`<div class="rec" style="padding:10px 14px"><div class="ric" style="font-size:16px">${ic}</div><div class="rinfo"><div class="rtype" style="color:${col}">${r.type==='dd'?'DoorDash':'Клінінг'}</div><div class="rdetail">${r.miles?r.miles+' mi':''}</div></div><div class="rnums"><div class="rinc" style="color:${col};font-size:15px">+${f(r.inc)}</div><div class="rsub" style="color:var(--g);font-weight:700">= ${f(r.net||0)} чисто</div></div><button class="delbtn" onclick="delRec(${r.id})" style="margin-left:8px">✕</button></div>`;}).join('')}</div></div>`;
+  }).join('');
+}
+render();
+</script>
+</body>
+</html>
